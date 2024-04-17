@@ -15,6 +15,7 @@ Rules:
 
 namespace CMP1903_A2_2324 {
     public class SevensOut(IPlayer playerOne, IPlayer playerTwo) : Game(2, playerOne, playerTwo) {
+
         public override void Play() {
             Reset();
 

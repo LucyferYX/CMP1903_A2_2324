@@ -12,6 +12,12 @@ namespace CMP1903_A2_2324 {
         bool IsComputer { get; }
     }
 
+    public struct Player : IPlayer {
+        public string Name { get; set; }
+        public int Score { get; set; }
+        public bool IsComputer { get; set; }
+    }
+
     public abstract class Game {
         protected readonly Die[] dice;
 

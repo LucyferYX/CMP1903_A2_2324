@@ -16,7 +16,47 @@ Rules:
     First to a total of 20.*/
 
 namespace CMP1903_A2_2324 {
-    internal class ThreeOrMore {
+    public class ThreeOrMore(IPlayer playerOne, IPlayer playerTwo) : Game(5, playerOne, playerTwo) {
+        public override void Play() {
+            Reset();
 
+            while (PlayerOne.Score < 20 && PlayerTwo.Score < 20) {
+                // Player 1
+                Console.WriteLine("\nPlayer 1 turn. Press any key to roll the dice...");
+                Console.ReadKey(true);
+                int[] rolls = RollDice();
+                Console.WriteLine($"Player 1 rolled {string.Join(", ", rolls)}");
+                PlayerOne.Score += CalculateScore(rolls);
+
+                // Player 2
+                Console.WriteLine(PlayerTwo.IsComputer ? "Computer turn." : "Player 2 turn. Press any key to roll the dice...");
+                if (!PlayerTwo.IsComputer) {
+                    Console.ReadKey(true);
+                }
+                rolls = RollDice();
+                Console.WriteLine(PlayerTwo.IsComputer ? $"Computer rolled {string.Join(", ", rolls)}" : $"Player 2 rolled {string.Join(", ", rolls)}");
+                PlayerTwo.Score += CalculateScore(rolls);
+            }
+        }
+
+        private int[] RollDice() {
+            return dice.Select(d => d.Roll()).ToArray();
+        }
+
+        private static int CalculateScore(int[] rolls) {
+            var counts = new int[6];
+            foreach (var roll in rolls) {
+                counts[roll - 1]++;
+            }
+
+            for (int i = 0; i < counts.Length; i++) {
+                if (counts[i] >= 3) {
+                    return counts[i] == 5 ? 12 : counts[i] == 4 ? 6 : 3;
+                }
+            }
+
+            return 0;
+        }
     }
+
 }
