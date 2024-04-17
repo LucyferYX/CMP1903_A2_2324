@@ -21,19 +21,22 @@ namespace CMP1903_A1_2324 {
             get;
             private set;
         }
-        public int PlayerOneHighScore {
-            get;
-            private set;
-        }
-        public int PlayerTwoHighScore { 
-            get; 
-            private set;
-        }
+        public Dictionary<string, Tuple<int, int>> HighScores { get; } = [];
 
-        public void UpdateStats(SevensOut game) {
+        public void UpdateStats(Game game) {
             NumberOfPlays++;
-            PlayerOneHighScore = Math.Max(PlayerOneHighScore, game.PlayerOneScore);
-            PlayerTwoHighScore = Math.Max(PlayerTwoHighScore, game.PlayerTwoScore);
+            string gameType = game.GetType().Name;
+
+            //if (!HighScores.ContainsKey(gameType)) {
+                //HighScores[gameType] = new Tuple<int, int>(0, 0);
+            //}
+
+            var currentHighScores = HighScores[gameType];
+            int newPlayerOneHighScore = Math.Max(currentHighScores.Item1, game.PlayerOne.Score);
+            int newPlayerTwoHighScore = Math.Max(currentHighScores.Item2, game.PlayerTwo.Score);
+
+            HighScores[gameType] = new Tuple<int, int>(newPlayerOneHighScore, newPlayerTwoHighScore);
         }
     }
+
 }

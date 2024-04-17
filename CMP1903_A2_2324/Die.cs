@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace CMP1903_A1_2324 {
-    internal class Die {
+    public class Die {
         private const int MinDie = 1;
         private const int MaxDie = 6;
 
