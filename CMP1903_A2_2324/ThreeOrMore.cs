@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CMP1903_A1_2324;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +22,7 @@ namespace CMP1903_A2_2324 {
     public class ThreeOrMore(IPlayer playerOne, IPlayer playerTwo) : Game(5, playerOne, playerTwo) {
         private const int DieCount = 5;
         private const int EndScore = 20;
+
         /// <summary>
         /// Method that continues the game until one of the players scores 20 or more.
         /// </summary>
@@ -47,14 +49,14 @@ namespace CMP1903_A2_2324 {
         /// <returns>Returns true if the player's score is 20 or more, returns false otherwise.</returns>
         private bool PlayTurn(IPlayer player, string turnMessage, string rollMessage) {
             Console.WriteLine(turnMessage);
+
             if (!player.IsComputer) {
                 Console.ReadKey(true);
             }
+
             int[] rolls = RollDice();
             Console.WriteLine($"{rollMessage}{string.Join(", ", rolls)}");
-            if (!player.IsComputer) {
-                rolls = HandleTwoOfAKind(rolls, player);
-            }
+            rolls = HandleTwoOfAKind(rolls, player);
             player.Score += CalculateScore(rolls);
             Console.WriteLine($"{player.Name} score is {player.Score}");
 
@@ -68,31 +70,12 @@ namespace CMP1903_A2_2324 {
         /// <param name="player">The player who rolled the dice.</param>
         /// <returns>The new array of dice rolls after handling the two of a kind.</returns>
         private int[] HandleTwoOfAKind(int[] rolls, IPlayer player) {
-            var counts = new int[DieCount+1];
-            foreach (var roll in rolls) {
-                counts[roll - 1]++;
-            }
+            var counts = GetRollCounts(rolls);
 
             for (int i = 0; i < counts.Length; i++) {
                 if (counts[i] == 2 && !counts.Any(count => count > 2)) {
-                    Console.WriteLine($"{player.Name} rolled 2-of-a-kind of {i + 1}! Press: \n [1] to re-roll all dice \n [2] to re-roll the remaining dice");
-                    var keyInfo = Console.ReadKey(intercept: true);
-                    if (keyInfo.Key == ConsoleKey.D1) {
-                        rolls = RollDice(DieCount);  // Re-roll all dice
-                    } else if (keyInfo.Key == ConsoleKey.D2) {
-                        int[] newRolls = new int[DieCount];
-                        int count = 0;
-                        for (int j = 0; j < rolls.Length; j++) {
-                            if (rolls[j] == i + 1 && count < 2) {
-                                newRolls[j] = rolls[j];
-                                count++;
-                            } else {
-                                newRolls[j] = RollDice(1)[0];  // Re-roll the dice
-                            }
-                        }
-                        rolls = newRolls;
-                    }
-                    Console.WriteLine($"New rolls are {string.Join(", ", rolls)}");
+                    rolls = HandlePlayer(rolls, player, i);
+                    Console.WriteLine($"Final rolls are {string.Join(", ", rolls)}");
                     break;
                 }
             }
@@ -101,7 +84,80 @@ namespace CMP1903_A2_2324 {
         }
 
         /// <summary>
-        /// Method that rolls a specified number of dice.
+        /// Method that handles the player's turn when two of a kind are rolled.
+        /// </summary>
+        /// <param name="rolls">The array of dice rolls.</param>
+        /// <param name="player">The player with current turn.</param>
+        /// <param name="i">The index of the two of a kind die.</param>
+        /// <returns>The new array of dice rolls after handling the two of a kind.</returns>
+        private int[] HandlePlayer(int[] rolls, IPlayer player, int i) {
+            int choice;
+
+            if (player.IsComputer) {
+                Random rnd = new();
+                choice = rnd.Next(1, 4);
+            } else {
+                Console.WriteLine($"{player.Name} rolled 2-of-a-kind of {i + 1}! Press: \n [1] to re-roll all dice \n [2] to re-roll the remaining dice \n Any other key to skip re-roll");
+                var keyInfo = Console.ReadKey(intercept: true);
+                choice = keyInfo.Key == ConsoleKey.D1 ? 1 : keyInfo.Key == ConsoleKey.D2 ? 2 : 3;
+            }
+
+            switch (choice) {
+                case 1:
+                    Console.WriteLine($"{player.Name} chose to re-roll all dice");
+                    rolls = RollDice(DieCount);
+                    break;
+                case 2:
+                    Console.WriteLine($"{player.Name} chose to re-roll the remaining dice");
+                    rolls = ReRollRemainingDice(rolls, i);
+                    break;
+                default:
+                    Console.WriteLine($"{player.Name} chose to skip re-roll");
+                    break;
+            }
+
+            return rolls;
+        }
+
+        /// <summary>
+        /// Method that counts instance of each roll.
+        /// </summary>
+        /// <param name="rolls">The array of dice rolls.</param>
+        /// <returns>The array that shows how many times each die roll appears. The value at each index is the count of the die roll.</returns>
+        private static int[] GetRollCounts(int[] rolls) {
+            var counts = new int[DieCount + 1];
+
+            foreach (var roll in rolls) {
+                counts[roll - 1]++;
+            }
+
+            return counts;
+        }
+
+        /// <summary>
+        /// Method that re-rolls the remaining dice after two of a kind dice are found.
+        /// </summary>
+        /// <param name="rolls">The array of dice rolls.</param>
+        /// <param name="i">The index of the two of a kind in the counts array.</param>
+        /// <returns>The new array of dice rolls after re-rolling the remaining dice.</returns>
+        private int[] ReRollRemainingDice(int[] rolls, int i) {
+            int[] newRolls = new int[DieCount];
+            int count = 0;
+
+            for (int j = 0; j < rolls.Length; j++) {
+                if (rolls[j] == i + 1 && count < 2) {
+                    newRolls[j] = rolls[j];
+                    count++;
+                } else {
+                    newRolls[j] = RollDice(1)[0];
+                }
+            }
+
+            return newRolls;
+        }
+
+        /// <summary>
+        /// Method that rolls a specific number of dice.
         /// </summary>
         /// <param name="count">The number of dice to roll. Currently is 5.</param>
         /// <returns>The array of the dice rolls.</returns>
@@ -116,6 +172,7 @@ namespace CMP1903_A2_2324 {
         /// <returns>The score for the dice rolls.</returns>
         private static int CalculateScore(int[] rolls) {
             var counts = new int[DieCount+1];
+
             foreach (var roll in rolls) {
                 counts[roll - 1]++;
             }

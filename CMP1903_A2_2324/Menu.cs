@@ -69,8 +69,8 @@ namespace CMP1903_A1_2324 {
                     try {
                         game.Play();
                         stats.UpdateStats(game);
-                        Console.WriteLine($"\nPlayer Score: {game.PlayerOne.Score}");
-                        Console.WriteLine($"Computer Score: {game.PlayerTwo.Score}");
+                        Console.WriteLine($"\n{game.PlayerOne.Name} score: {game.PlayerOne.Score}");
+                        Console.WriteLine($"{game.PlayerTwo.Name} score: {game.PlayerTwo.Score}");
                     } catch (NullReferenceException) {
                         Console.WriteLine("No game has been selected.");
                         break;
