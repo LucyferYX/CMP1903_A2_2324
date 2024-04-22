@@ -15,46 +15,80 @@ Rules:
 
 namespace CMP1903_A2_2324 {
     public class SevensOut(IPlayer playerOne, IPlayer playerTwo) : Game(2, playerOne, playerTwo) {
+        private const int DieCount = 2;
+        private const int EndScore = 7;
+
+        /// <summary>
+        /// Method that continues the game until it is true (until a specific value is rolled).
+        /// </summary>
         public override void Play() {
             Reset();
 
             while (true) {
-                if (PlayTurn(PlayerOne, "\nPlayer 1 turn. Press any key to roll the dice...", "Player 1 rolled ")) {
+                if (PlayTurn(PlayerOne)) {
                     break;
                 }
 
-                if (PlayTurn(PlayerTwo, PlayerTwo.IsComputer ? "Computer turn." : "Player 2 turn. Press any key to roll the dice...", PlayerTwo.IsComputer ? "Computer rolled " : "Player 2 rolled ")) {
+                if (PlayTurn(PlayerTwo)) {
                     break;
                 }
             }
         }
 
-        private bool PlayTurn(IPlayer player, string turnMessage, string rollMessage) {
-            Console.WriteLine(turnMessage);
+        /// <summary>
+        /// Method that lets a player play a single turn in the game.
+        /// </summary>
+        /// <param name="player">The player who is playing the turn.</param>
+        /// <param name="turnMessage">The message to display at the start of the turn.</param>
+        /// <returns>Returns true if the total roll is 7, returns false otherwise.</returns>
+        private bool PlayTurn(IPlayer player) {
+            Console.WriteLine(player.IsComputer ? $"\n{player.Name} turn." : $"\n{player.Name} turn. Press any key to roll the dice...");
             if (!player.IsComputer) {
                 Console.ReadKey(true);
             }
-            int roll1 = dice[0].Roll();
-            int roll2 = dice[1].Roll();
-            int total = roll1 + roll2;
 
-            if (roll1 == roll2) {
-                Console.WriteLine($"{rollMessage}{total}! Double points {total*2}! ({roll1},{roll2})");
-            } else {
-                Console.WriteLine($"{rollMessage}{total}! ({roll1},{roll2})");
-            }
+            int[] rolls = RollDice();
+            int total = ProcessRolls(player, rolls);
 
-            if (total == 7) {
+            if (total == EndScore) {
                 return true;
-            }
-
-            if (roll1 == roll2) {
-                total *= 2;
             }
 
             player.Score += total;
 
+            Console.WriteLine($"{player.Name} score is {player.Score}");
+
             return false;
         }
+
+        /// <summary>
+        /// Method that rolls a specific number of dice.
+        /// </summary>
+        /// <param name="count">The number of dice to roll. Currently is 5.</param>
+        /// <returns>The array of the dice rolls.</returns>
+        private int[] RollDice(int count = DieCount) {
+            return dice.Take(count).Select(d => d.Roll()).ToArray();
+        }
+
+        /// <summary>
+        /// Method that calculates and writes a message to the console about the results of the player's dice rolls.
+        /// </summary>
+        /// <param name="player">The player who rolled the dice.</param>
+        /// <param name="rolls">The array of dice rolls.</param>
+        /// <returns>The total score of the dice rolls.</returns>
+        private static int ProcessRolls(IPlayer player, int[] rolls) {
+            int total = rolls.Sum();
+            if (rolls[0] == rolls[1]) {
+                Console.WriteLine($"{player.Name} rolled {total}! Double points {total * 2}! ({rolls[0]},{rolls[1]})");
+                if (rolls[0] == rolls[1]) {
+                    total *= 2;
+                }
+            } else {
+                Console.WriteLine($"{player.Name} rolled {total}! ({rolls[0]},{rolls[1]})");
+            }
+
+            return total;
+        }
+
     }
 }

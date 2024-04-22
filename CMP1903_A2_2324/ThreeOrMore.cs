@@ -30,11 +30,11 @@ namespace CMP1903_A2_2324 {
             Reset();
 
             while (PlayerOne.Score < EndScore && PlayerTwo.Score < EndScore) {
-                if (PlayTurn(PlayerOne, $"\n{PlayerOne.Name} turn. Press any key to roll the dice...", $"{PlayerOne.Name} rolled ")) {
+                if (PlayTurn(PlayerOne)) {
                     break;
                 }
 
-                if (PlayTurn(PlayerTwo, PlayerTwo.IsComputer ? $"\n{PlayerTwo.Name} turn." : $"\n{PlayerTwo.Name} turn. Press any key to roll the dice...", PlayerTwo.IsComputer ? $"{PlayerTwo.Name} rolled " : $"{PlayerTwo.Name} rolled ")) {
+                if (PlayTurn(PlayerTwo)) {
                     break;
                 }
             }
@@ -47,15 +47,15 @@ namespace CMP1903_A2_2324 {
         /// <param name="turnMessage">The message to display at the start of the turn.</param>
         /// <param name="rollMessage">The message to display after the dice are rolled.</param>
         /// <returns>Returns true if the player's score is 20 or more, returns false otherwise.</returns>
-        private bool PlayTurn(IPlayer player, string turnMessage, string rollMessage) {
-            Console.WriteLine(turnMessage);
+        private bool PlayTurn(IPlayer player) {
+            Console.WriteLine(player.IsComputer ? $"\n{player.Name} turn." : $"\n{player.Name} turn. Press any key to roll the dice...");
 
             if (!player.IsComputer) {
                 Console.ReadKey(true);
             }
 
             int[] rolls = RollDice();
-            Console.WriteLine($"{rollMessage}{string.Join(", ", rolls)}");
+            Console.WriteLine($"{player.Name} rolled \"{string.Join(", ", rolls)}");
             rolls = HandleTwoOfAKind(rolls, player);
             player.Score += CalculateScore(rolls);
             Console.WriteLine($"{player.Name} score is {player.Score}");
