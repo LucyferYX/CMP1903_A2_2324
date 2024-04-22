@@ -61,9 +61,6 @@ namespace CMP1903_A1_2324 {
                     }
                 }
 
-                /*                SevensOut sevensOut = new(playerOne, playerTwo);
-                                ThreeOrMore threeOrMore = new(playerOne, playerTwo);*/
-
                 bool continueGame = true;
                 while (continueGame) {
                     try {

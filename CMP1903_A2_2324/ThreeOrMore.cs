@@ -20,11 +20,17 @@ Rules:
 
 namespace CMP1903_A2_2324 {
     public class ThreeOrMore(IPlayer playerOne, IPlayer playerTwo) : Game(5, playerOne, playerTwo) {
+        /// <summary>
+        /// Amount of die that will be rolled by a single player in one turn.
+        /// </summary>
         private const int DieCount = 5;
+        /// <summary>
+        /// Score that, upon being reached by a player, will end the game.
+        /// </summary>
         private const int EndScore = 20;
 
         /// <summary>
-        /// Method that continues the game until one of the players scores 20 or more.
+        /// Method that starts and continues the game until one of the players scores 20 or more.
         /// </summary>
         public override void Play() {
             Reset();
@@ -54,7 +60,7 @@ namespace CMP1903_A2_2324 {
                 Console.ReadKey(true);
             }
 
-            int[] rolls = RollDice();
+            int[] rolls = RollDice(DieCount);
             Console.WriteLine($"{player.Name} rolled \"{string.Join(", ", rolls)}");
             rolls = HandleTwoOfAKind(rolls, player);
             player.Score += CalculateScore(rolls);
@@ -154,15 +160,6 @@ namespace CMP1903_A2_2324 {
             }
 
             return newRolls;
-        }
-
-        /// <summary>
-        /// Method that rolls a specific number of dice.
-        /// </summary>
-        /// <param name="count">The number of dice to roll. Currently is 5.</param>
-        /// <returns>The array of the dice rolls.</returns>
-        private int[] RollDice(int count = DieCount) {
-            return dice.Take(count).Select(d => d.Roll()).ToArray();
         }
 
         /// <summary>

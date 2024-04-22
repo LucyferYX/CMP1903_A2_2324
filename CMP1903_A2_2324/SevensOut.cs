@@ -15,11 +15,17 @@ Rules:
 
 namespace CMP1903_A2_2324 {
     public class SevensOut(IPlayer playerOne, IPlayer playerTwo) : Game(2, playerOne, playerTwo) {
+        /// <summary>
+        /// Amount of die that will be rolled by a single player in one turn.
+        /// </summary>
         private const int DieCount = 2;
+        /// <summary>
+        /// Score that, upon being rolled, will end the game.
+        /// </summary>
         private const int EndScore = 7;
 
         /// <summary>
-        /// Method that continues the game until it is true (until a specific value is rolled).
+        /// Method that starts and continues the game until it is true (until a specific value is rolled).
         /// </summary>
         public override void Play() {
             Reset();
@@ -47,7 +53,7 @@ namespace CMP1903_A2_2324 {
                 Console.ReadKey(true);
             }
 
-            int[] rolls = RollDice();
+            int[] rolls = RollDice(DieCount);
             int total = ProcessRolls(player, rolls);
 
             if (total == EndScore) {
@@ -59,15 +65,6 @@ namespace CMP1903_A2_2324 {
             Console.WriteLine($"{player.Name} score is {player.Score}");
 
             return false;
-        }
-
-        /// <summary>
-        /// Method that rolls a specific number of dice.
-        /// </summary>
-        /// <param name="count">The number of dice to roll. Currently is 5.</param>
-        /// <returns>The array of the dice rolls.</returns>
-        private int[] RollDice(int count = DieCount) {
-            return dice.Take(count).Select(d => d.Roll()).ToArray();
         }
 
         /// <summary>

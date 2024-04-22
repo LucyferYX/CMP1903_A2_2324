@@ -6,14 +6,30 @@ using System.Threading.Tasks;
 
 namespace CMP1903_A2_2324 {
     public interface IPlayer {
-        string Name { get; }
-        int Score { get; set; }
-        bool IsComputer { get; }
+        string Name { 
+            get;
+        }
+        int Score { 
+            get;
+            set; 
+        }
+        bool IsComputer { 
+            get; 
+        }
     }
 
     public struct Player : IPlayer {
-        public string Name { get; set; }
-        public int Score { get; set; }
-        public bool IsComputer { get; set; }
+        public string Name { 
+            get; 
+            set; 
+        }
+        public int Score { 
+            get; 
+            set; 
+        }
+        public bool IsComputer { 
+            get; 
+            set; 
+        }
     }
 }
