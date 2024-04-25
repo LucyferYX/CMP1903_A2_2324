@@ -25,7 +25,7 @@ namespace CMP1903_A2_2324 {
         /// </summary>
         private const int DieCount = 5;
         /// <summary>
-        /// Score that, upon being reached by a player, will end the game.
+        /// The score at which the ThreeOrMore game ends.
         /// </summary>
         private const int EndScore = 20;
 

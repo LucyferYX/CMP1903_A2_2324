@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace CMP1903_A1_2324 {
     public class Die {
+        /// <summary>
+        /// The minimum value of the die.
+        /// </summary>
         private const int MinDie = 1;
+
+        /// <summary>
+        /// The maximum value of the die.
+        /// </summary>
         private const int MaxDie = 6;
 
         /// <summary>

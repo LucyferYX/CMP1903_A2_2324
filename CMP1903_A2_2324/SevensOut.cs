@@ -20,7 +20,7 @@ namespace CMP1903_A2_2324 {
         /// </summary>
         private const int DieCount = 2;
         /// <summary>
-        /// Score that, upon being rolled, will end the game.
+        /// The score at which the SevensOut game ends.
         /// </summary>
         private const int EndScore = 7;
 
@@ -46,7 +46,7 @@ namespace CMP1903_A2_2324 {
         /// </summary>
         /// <param name="player">The player who is playing the turn.</param>
         /// <param name="turnMessage">The message to display at the start of the turn.</param>
-        /// <returns>Returns true if the total roll is 7, returns false otherwise.</returns>
+        /// <returns>Returns true if the total roll is same as EndScore, returns false otherwise.</returns>
         private bool PlayTurn(IPlayer player) {
             Console.WriteLine(player.IsComputer ? $"\n{player.Name} turn." : $"\n{player.Name} turn. Press any key to roll the dice...");
             if (!player.IsComputer) {

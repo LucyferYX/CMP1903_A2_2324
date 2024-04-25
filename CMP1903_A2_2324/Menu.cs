@@ -14,8 +14,9 @@ namespace CMP1903_A1_2324 {
             bool continueProgram = true;
             bool isComputer = true;
 
-            Statistics stats = new();
             Game? game = null;
+            Statistics stats = new();
+            Testing tester = new();
 
             ConsoleKeyInfo keyInfo;
 
@@ -68,6 +69,7 @@ namespace CMP1903_A1_2324 {
                         stats.UpdateStats(game);
                         Console.WriteLine($"\n{game.PlayerOne.Name} score: {game.PlayerOne.Score}");
                         Console.WriteLine($"{game.PlayerTwo.Name} score: {game.PlayerTwo.Score}");
+                        Testing.TestingResults(game);
                     } catch (NullReferenceException) {
                         Console.WriteLine("No game has been selected.");
                         break;
