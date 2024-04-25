@@ -5,13 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-/*Sevens Out
+/*
+Sevens Out
 2 x dice
 Rules:
 	Roll the two dice, noting the total rolled each time.
 	If it is a 7 - stop.
 	If it is any other number - add it to your total.
-		If it is a double - add double the total to your score (3,3 would add 12 to your total)*/
+	If it is a double - add double the total to your score (3,3 would add 12 to your total)
+*/
 
 namespace CMP1903_A2_2324 {
     public class SevensOut(IPlayer playerOne, IPlayer playerTwo) : Game(2, playerOne, playerTwo) {
@@ -47,7 +49,7 @@ namespace CMP1903_A2_2324 {
         /// <param name="player">The player who is playing the turn.</param>
         /// <param name="turnMessage">The message to display at the start of the turn.</param>
         /// <returns>Returns true if the total roll is same as EndScore, returns false otherwise.</returns>
-        private bool PlayTurn(IPlayer player) {
+        public bool PlayTurn(IPlayer player) {
             Console.WriteLine(player.IsComputer ? $"\n{player.Name} turn." : $"\n{player.Name} turn. Press any key to roll the dice...");
             if (!player.IsComputer) {
                 Console.ReadKey(true);
@@ -56,15 +58,22 @@ namespace CMP1903_A2_2324 {
             int[] rolls = RollDice(DieCount);
             int total = ProcessRolls(player, rolls);
 
-            if (total == EndScore) {
-                return true;
+            // Testing total of sum
+            int expectedTotal = rolls.Sum();
+            if (rolls[0] == rolls[1]) {
+                expectedTotal *= 2;
             }
+            Testing.VerifyTotalSum(total, expectedTotal);
 
             player.Score += total;
 
+            // Testing game ending correctly
+            bool isGameOver = total == EndScore;
+            Testing.TestingSevensOutEndScore(isGameOver, total);
+
             Console.WriteLine($"{player.Name} score is {player.Score}");
 
-            return false;
+            return isGameOver;
         }
 
         /// <summary>

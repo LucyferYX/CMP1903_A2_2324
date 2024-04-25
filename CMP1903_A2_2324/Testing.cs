@@ -23,14 +23,17 @@ namespace CMP1903_A1_2324 {
         /// Tests results of a game ending correctly.
         /// </summary>
         /// <param name="game">The game being tested.</param>
-        public static void TestingResults(Game game) {
-            if (game is SevensOut sevensOutGame) {
-                Debug.Assert(sevensOutGame.PlayerOne.Score == SevensOutEndScore || sevensOutGame.PlayerTwo.Score != SevensOutEndScore, $"SevensOut game should end when player rolls {SevensOutEndScore}. Total score gotten: {SevensOutEndScore}.");
-            }
+        public static void TestingThreeOrMoreEndScore(ThreeOrMore game) {
+            Debug.Assert(game.PlayerOne.Score >= ThreeOrMoreEndScore || game.PlayerTwo.Score >= ThreeOrMoreEndScore, $"ThreeOrMore game should end when one of the players have scored {ThreeOrMoreEndScore} or more. {game.PlayerOne.Name} score: {game.PlayerOne.Score}, {game.PlayerTwo.Name} score: {game.PlayerTwo.Score}.");
+        }
 
-            if (game is ThreeOrMore threeOrMoreGame) {
-                Debug.Assert(threeOrMoreGame.PlayerOne.Score >= ThreeOrMoreEndScore || threeOrMoreGame.PlayerTwo.Score >= ThreeOrMoreEndScore, $"ThreeOrMore game should end when one of the players have scored {ThreeOrMoreEndScore} or more. {threeOrMoreGame.PlayerOne.Name} score: {threeOrMoreGame.PlayerOne.Score}, {threeOrMoreGame.PlayerTwo.Name} score: {threeOrMoreGame.PlayerTwo.Score}.");
-            }
+        public static void TestingSevensOutEndScore(bool isGameOver, int total) {
+            Debug.Assert(!(total == SevensOutEndScore && !isGameOver), $"SevensOut game should end when player rolls {SevensOutEndScore}. Score rolled was {total} and the game did not end.");
+            Debug.Assert(!(total != SevensOutEndScore && isGameOver), $"SevensOut game should end when player rolls {SevensOutEndScore}. Score rolled was {total} and the game ended.");
+        }
+
+        public static void VerifyTotalSum(int total, int expectedTotal) {
+            Debug.Assert(total == expectedTotal, $"Test Failed: The total sum of the dice rolls should be {expectedTotal}, but it was {total}.");
         }
     }
 
