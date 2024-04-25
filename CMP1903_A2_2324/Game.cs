@@ -13,9 +13,12 @@ namespace CMP1903_A2_2324 {
         protected readonly Die[] dice;
 
         /// <summary>
-        /// Gets the players that will play in the game.
+        /// Gets the Player 1 that will play in the game.
         /// </summary>
         public IPlayer PlayerOne { get; }
+        /// <summary>
+        /// Gets the Player 2 that will play in the game.
+        /// </summary>
         public IPlayer PlayerTwo { get; }
 
         /// <summary>

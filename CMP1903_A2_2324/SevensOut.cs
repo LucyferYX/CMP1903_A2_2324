@@ -58,18 +58,13 @@ namespace CMP1903_A2_2324 {
             int[] rolls = RollDice(DieCount);
             int total = ProcessRolls(player, rolls);
 
-            // Testing total of sum
-            int expectedTotal = rolls.Sum();
-            if (rolls[0] == rolls[1]) {
-                expectedTotal *= 2;
-            }
-            Testing.VerifyTotalSum(total, expectedTotal);
+            TestTotalSum(rolls, total);
 
             player.Score += total;
 
-            // Testing game ending correctly
             bool isGameOver = total == EndScore;
-            Testing.TestingSevensOutEndScore(isGameOver, total);
+
+            TestGameEndCondition(isGameOver, total);
 
             Console.WriteLine($"{player.Name} score is {player.Score}");
 
@@ -94,6 +89,28 @@ namespace CMP1903_A2_2324 {
             }
 
             return total;
+        }
+
+        /// <summary>
+        /// Method that tests if the total sum of the dice rolls is calculated correctly.
+        /// </summary>
+        /// <param name="rolls">The array of dice rolls.</param>
+        /// <param name="total">The total sum of the dice rolls returned by the ProcessRolls method.</param>
+        private static void TestTotalSum(int[] rolls, int total) {
+            int expectedTotal = rolls.Sum();
+            if (rolls[0] == rolls[1]) {
+                expectedTotal *= 2;
+            }
+            Testing.TestingSevensOutTotalSum(total, expectedTotal);
+        }
+
+        /// <summary>
+        /// Method that tests whether the game ends correctly when a player rolls EndScore value.
+        /// </summary>
+        /// <param name="isGameOver">Boolean that indicates whether the game is over.</param>
+        /// <param name="total">The total sum of the dice rolls.</param>
+        private static void TestGameEndCondition(bool isGameOver, int total) {
+            Testing.TestingSevensOutEndScore(isGameOver, total);
         }
 
     }

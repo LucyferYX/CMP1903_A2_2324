@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace CMP1903_A2_2324 {
+    /// <summary>
+    /// Interface for player that will play games.
+    /// </summary>
     public interface IPlayer {
         string Name { 
             get;
@@ -18,6 +21,9 @@ namespace CMP1903_A2_2324 {
         }
     }
 
+    /// <summary>
+    /// Struct of player that will play games.
+    /// </summary>
     public struct Player : IPlayer {
         public string Name { 
             get; 

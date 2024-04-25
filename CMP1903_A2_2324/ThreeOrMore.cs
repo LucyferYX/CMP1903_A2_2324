@@ -63,7 +63,9 @@ namespace CMP1903_A2_2324 {
             int[] rolls = RollDice(DieCount);
             Console.WriteLine($"{player.Name} rolled \"{string.Join(", ", rolls)}");
             rolls = HandleTwoOfAKind(rolls, player);
-            player.Score += CalculateScore(rolls);
+
+            TestScore(player, rolls);
+
             Console.WriteLine($"{player.Name} score is {player.Score}");
 
             return player.Score >= EndScore;
@@ -181,6 +183,17 @@ namespace CMP1903_A2_2324 {
             }
 
             return 0;
+        }
+
+        /// <summary>
+        /// Method that calculates the expected score and verifies if the player's score is set and added correctly.
+        /// </summary>
+        /// <param name="player">The player whose score is to be verified.</param>
+        /// <param name="rolls">The array of dice rolls.</param>
+        private void TestScore(IPlayer player, int[] rolls) {
+            int expectedScore = player.Score + CalculateScore(rolls);
+            player.Score += CalculateScore(rolls);
+            Testing.TestingThreeOrMoreTotalSum(this, player, expectedScore);
         }
     }
 }

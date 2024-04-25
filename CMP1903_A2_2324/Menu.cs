@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CMP1903_A1_2324 {
+    /// <summary>
+    /// Menu class 
+    /// </summary>
     internal class Menu {
         static void Main(string[] args) {
             bool continueProgram = true;

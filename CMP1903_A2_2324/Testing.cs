@@ -19,10 +19,7 @@ namespace CMP1903_A1_2324 {
         /// </summary>
         private const int ThreeOrMoreEndScore = 20;
 
-        /// <summary>
-        /// Tests results of a game ending correctly.
-        /// </summary>
-        /// <param name="game">The game being tested.</param>
+
         public static void TestingThreeOrMoreEndScore(ThreeOrMore game) {
             Debug.Assert(game.PlayerOne.Score >= ThreeOrMoreEndScore || game.PlayerTwo.Score >= ThreeOrMoreEndScore, $"ThreeOrMore game should end when one of the players have scored {ThreeOrMoreEndScore} or more. {game.PlayerOne.Name} score: {game.PlayerOne.Score}, {game.PlayerTwo.Name} score: {game.PlayerTwo.Score}.");
         }
@@ -32,8 +29,12 @@ namespace CMP1903_A1_2324 {
             Debug.Assert(!(total != SevensOutEndScore && isGameOver), $"SevensOut game should end when player rolls {SevensOutEndScore}. Score rolled was {total} and the game ended.");
         }
 
-        public static void VerifyTotalSum(int total, int expectedTotal) {
+        public static void TestingSevensOutTotalSum(int total, int expectedTotal) {
             Debug.Assert(total == expectedTotal, $"Test Failed: The total sum of the dice rolls should be {expectedTotal}, but it was {total}.");
+        }
+
+        public static void TestingThreeOrMoreTotalSum(ThreeOrMore game, IPlayer player, int expectedScore) {
+            Debug.Assert(player.Score == expectedScore, $"Test Failed: The player's score should be {expectedScore}, but it was {player.Score}.");
         }
     }
 
