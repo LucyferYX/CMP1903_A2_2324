@@ -91,6 +91,7 @@ namespace CMP1903_A2_2324 {
             return total;
         }
 
+        // Method overloading
         /// <summary>
         /// Method that tests if the total sum of the dice rolls is calculated correctly.
         /// </summary>

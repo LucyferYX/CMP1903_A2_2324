@@ -61,9 +61,8 @@ namespace CMP1903_A2_2324 {
             }
 
             int[] rolls = RollDice(DieCount);
-            Console.WriteLine($"{player.Name} rolled \"{string.Join(", ", rolls)}");
+            Console.WriteLine($"{player.Name} rolled {string.Join(", ", rolls)}");
             rolls = HandleTwoOfAKind(rolls, player);
-
             TestScore(player, rolls);
 
             Console.WriteLine($"{player.Name} score is {player.Score}");
@@ -117,7 +116,7 @@ namespace CMP1903_A2_2324 {
                     break;
                 case 2:
                     Console.WriteLine($"{player.Name} chose to re-roll the remaining dice");
-                    rolls = ReRollRemainingDice(rolls, i);
+                    rolls = RollDice(DieCount, rolls, i);
                     break;
                 default:
                     Console.WriteLine($"{player.Name} chose to skip re-roll");
@@ -143,57 +142,43 @@ namespace CMP1903_A2_2324 {
         }
 
         /// <summary>
-        /// Method that re-rolls the remaining dice after two of a kind dice are found.
-        /// </summary>
-        /// <param name="rolls">The array of dice rolls.</param>
-        /// <param name="i">The index of the two of a kind in the counts array.</param>
-        /// <returns>The new array of dice rolls after re-rolling the remaining dice.</returns>
-        private int[] ReRollRemainingDice(int[] rolls, int i) {
-            int[] newRolls = new int[DieCount];
-            int count = 0;
-
-            for (int j = 0; j < rolls.Length; j++) {
-                if (rolls[j] == i + 1 && count < 2) {
-                    newRolls[j] = rolls[j];
-                    count++;
-                } else {
-                    newRolls[j] = RollDice(1)[0];
-                }
-            }
-
-            return newRolls;
-        }
-
-        /// <summary>
         /// Method that calculates the score for a set of dice rolls according to the rules of the game.
         /// </summary>
         /// <param name="rolls">The array of dice rolls.</param>
         /// <returns>The score for the dice rolls.</returns>
         private static int CalculateScore(int[] rolls) {
-            var counts = new int[DieCount+1];
+            try {
+                var counts = new int[DieCount + 1];
 
-            foreach (var roll in rolls) {
-                counts[roll - 1]++;
-            }
-
-            for (int i = 0; i < counts.Length; i++) {
-                if (counts[i] >= 3) {
-                    return counts[i] == 5 ? 12 : counts[i] == 4 ? 6 : 3;
+                foreach (var roll in rolls) {
+                    counts[roll - 1]++;
                 }
+
+                for (int i = 0; i < counts.Length; i++) {
+                    if (counts[i] >= 3) {
+                        return counts[i] == 5 ? 12 : counts[i] == 4 ? 6 : 3;
+                    }
+                }
+            } catch (Exception ex) {
+                Console.WriteLine($"Error: {ex.Message}. Score could not be calculated.");
             }
 
             return 0;
         }
 
         /// <summary>
-        /// Method that calculates the expected score and verifies if the player's score is set and added correctly.
+        /// Method that calculates the expected score, adds it to player and verifies if the player's score is set and added correctly.
         /// </summary>
         /// <param name="player">The player whose score is to be verified.</param>
         /// <param name="rolls">The array of dice rolls.</param>
-        private void TestScore(IPlayer player, int[] rolls) {
-            int expectedScore = player.Score + CalculateScore(rolls);
-            player.Score += CalculateScore(rolls);
-            Testing.TestingThreeOrMoreTotalSum(this, player, expectedScore);
+        private static void TestScore(IPlayer player, int[] rolls) {
+            try {
+                int expectedScore = player.Score + CalculateScore(rolls);
+                player.Score += CalculateScore(rolls);
+                Testing.TestingThreeOrMoreTotalSum(player, expectedScore);
+            } catch (Exception ex) {
+                Console.WriteLine($"Error: {ex.Message}. Score couldn't be tested.");
+            }
         }
     }
 }

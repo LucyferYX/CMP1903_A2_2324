@@ -82,7 +82,7 @@ namespace CMP1903_A1_2324 {
                         break;
                     }
 
-                    Console.WriteLine($"\nContinue? Press:\n[1] to continue this game \n[2] to play different game \n[3] to exit");
+                    Console.WriteLine($"\nContinue? Press:\n[1] to continue this game \n[2] to play different game \n[3] to output statistics \n[4] to exit");
                     valid = false;
                     while (!valid) {
                         keyInfo = Console.ReadKey(intercept: true);
@@ -96,6 +96,10 @@ namespace CMP1903_A1_2324 {
                                 continueGame = false;
                                 break;
                             case ConsoleKey.D3:
+                                WriteStatistics(stats);
+                                Console.WriteLine($"\nContinue? Press:\n[1] to continue this game \n[2] to play different game \n[3] to output statistics \n[4] to exit");
+                                break;
+                            case ConsoleKey.D4:
                                 valid = true;
                                 continueGame = false;
                                 continueProgram = false;
@@ -106,32 +110,28 @@ namespace CMP1903_A1_2324 {
                         }
                     }
                 }
-
-                Console.WriteLine($"\nStatistics!");
-                Console.WriteLine($"Total number of plays: {stats.GetNumberOfPlays("SevensOut") + stats.GetNumberOfPlays("ThreeOrMore")}");
-
-                Console.WriteLine($"\nSevens Out:");
-                Console.WriteLine($"Number of SevensOut plays: {stats.GetNumberOfPlays("SevensOut")}");
-                Console.WriteLine($"Player One High Score: {stats.GetHighScore("SevensOut", 1)}");
-                Console.WriteLine($"Player Two High Score: {stats.GetHighScore("SevensOut", 2)}");
-
-                Console.WriteLine($"\nThree or More:");
-                Console.WriteLine($"Number of ThreeOrMore plays: {stats.GetNumberOfPlays("ThreeOrMore")}");
-                Console.WriteLine($"Player One High Score: {stats.GetHighScore("ThreeOrMore", 1)}");
-                Console.WriteLine($"Player Two High Score: {stats.GetHighScore("ThreeOrMore", 2)}");
             }
 
             Console.WriteLine($"\nPress any key to exit...");
             _ = Console.ReadKey(true);
         }
 
-/*        public static void WriteStatistics() {
-            Console.WriteLine($"\nStatistics!");
-            Console.WriteLine($"Sevens Out:");
-            Console.WriteLine($"Number of Plays: {stats.NumberOfPlays}");
+        private static void WriteStatistics(Statistics stats) {
+            Console.WriteLine("\n---------- Statistics! -----------");
+            int totalPlays = stats.GetNumberOfPlays("SevensOut") + stats.GetNumberOfPlays("ThreeOrMore");
+            Console.WriteLine($"Total number of plays: {totalPlays}");
+
+            Console.WriteLine("\nSevens Out:");
+            Console.WriteLine($"Number of SevensOut plays: {stats.GetNumberOfPlays("SevensOut")}");
             Console.WriteLine($"Player One High Score: {stats.GetHighScore("SevensOut", 1)}");
             Console.WriteLine($"Player Two High Score: {stats.GetHighScore("SevensOut", 2)}");
-        }*/
+
+            Console.WriteLine("\nThree or More:");
+            Console.WriteLine($"Number of ThreeOrMore plays: {stats.GetNumberOfPlays("ThreeOrMore")}");
+            Console.WriteLine($"Player One High Score: {stats.GetHighScore("ThreeOrMore", 1)}");
+            Console.WriteLine($"Player Two High Score: {stats.GetHighScore("ThreeOrMore", 2)}");
+            Console.WriteLine("\n----------------------------------");
+        }
 
         public static void WriteInvalidInputLine() {
             Console.ForegroundColor = ConsoleColor.Red;

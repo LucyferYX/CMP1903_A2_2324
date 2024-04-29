@@ -58,5 +58,32 @@ namespace CMP1903_A2_2324 {
         protected int[] RollDice(int count) {
             return dice.Take(count).Select(d => d.Roll()).ToArray();
         }
+
+        /// <summary>
+        /// Method that re-rolls the remaining dice after two of a kind dice are found.
+        /// </summary>
+        /// <param name="rolls">The array of dice rolls.</param>
+        /// <param name="i">The index of the two of a kind in the counts array.</param>
+        /// <returns>The new array of dice rolls after re-rolling the remaining dice.</returns>
+        protected int[] RollDice(int dieCount, int[] rolls, int i) {
+            try {
+                int[] newRolls = new int[dieCount];
+                int rollCount = 0;
+
+                for (int j = 0; j < rolls.Length; j++) {
+                    if (rolls[j] == i + 1 && rollCount < 2) {
+                        newRolls[j] = rolls[j];
+                        rollCount++;
+                    } else {
+                        newRolls[j] = RollDice(1)[0];
+                    }
+                }
+
+                return newRolls;
+            } catch (Exception ex) {
+                Console.WriteLine($"Error: {ex.Message}. Rolls could not be re-rolled.");
+                return new int[dieCount];
+            }
+        }
     }
 }
