@@ -27,7 +27,7 @@ namespace CMP1903_A2_2324 {
         /// <param name="diceCount">The number of dice that will be rolled in the game.</param>
         /// <param name="playerOne">The first player that will play in the game.</param>
         /// <param name="playerTwo">The second player that will play in the game.</param>
-        public Game(int diceCount, IPlayer playerOne, IPlayer playerTwo) {
+        protected Game(int diceCount, IPlayer playerOne, IPlayer playerTwo) {
             dice = new Die[diceCount];
             for (int i = 0; i < diceCount; i++) {
                 dice[i] = new Die();
@@ -55,7 +55,7 @@ namespace CMP1903_A2_2324 {
         /// </summary>
         /// <param name="count">The number of dice to roll.</param>
         /// <returns>The array of the dice rolls.</returns>
-        // Example of LINQ
+        // Example of LINQ and method overloading
         protected int[] RollDice(int count) {
             return dice.Take(count).Select(d => d.Roll()).ToArray();
         }
@@ -90,7 +90,7 @@ namespace CMP1903_A2_2324 {
         /// Method that outputs line about player's turn.
         /// </summary>
         /// <param name="player">The current player.</param>
-        public static void WriteTurnMessage(IPlayer player) {
+        protected static void WriteTurnMessage(IPlayer player) {
             Console.WriteLine(player.IsComputer ? $"\n{player.Name} turn." : $"\n{player.Name} turn. Press any key to roll the dice...");
         }
 
@@ -98,7 +98,7 @@ namespace CMP1903_A2_2324 {
         /// Method that outputs line about player's score.
         /// </summary>
         /// <param name="player">The current player.</param>
-        public static void WriteScoreMessage(IPlayer player) {
+        protected static void WriteScoreMessage(IPlayer player) {
             Console.WriteLine($"{player.Name} score is {player.Score}");
         }
     }

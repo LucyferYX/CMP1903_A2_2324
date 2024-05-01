@@ -10,13 +10,13 @@ namespace CMP1903_A2_2324 {
         /// Dictionary to hold number of plays for each game.
         /// Key = game type. Value = number of plays.
         /// </summary>
-        public Dictionary<string, int> NumberOfPlays { get; } = [];
+        private Dictionary<string, int> NumberOfPlays { get; } = [];
 
         /// <summary>
         /// Dictionary to hold high scores for each game.
         /// Key = game type. Value = tuple holding high scores of player 1 and player 2.
         /// </summary>
-        public Dictionary<string, Tuple<int, int>> HighScores { get; } = [];
+        private Dictionary<string, Tuple<int, int>> HighScores { get; } = [];
 
         /// <summary>
         /// Method that updates the statistics of games and players

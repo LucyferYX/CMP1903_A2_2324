@@ -188,7 +188,7 @@ namespace CMP1903_A2_2324 {
         /// <param name="player">The current player.</param>
         /// <param name="rolls">The array of player's die rolls.</param>
         /// <param name="final">True if the rolls are after the re-roll.</param>
-        public static void WriteRollMessage(IPlayer player, int[] rolls, bool final) {
+        private static void WriteRollMessage(IPlayer player, int[] rolls, bool final) {
             Console.WriteLine(!final ? $"{player.Name} rolled {string.Join(", ", rolls)}" : $"Final rolls are {string.Join(", ", rolls)}");
         }
 
@@ -197,7 +197,7 @@ namespace CMP1903_A2_2324 {
         /// </summary>
         /// <param name="player">The current player.</param>
         /// <param name="i">The index of the two of a kind die.</param>
-        public static void WriteRerollChoiceMessage(IPlayer player, int i) {
+        private static void WriteRerollChoiceMessage(IPlayer player, int i) {
             Console.WriteLine($"{player.Name} rolled 2-of-a-kind of {i + 1}! Press: \n [1] to re-roll all dice \n [2] to re-roll the remaining dice \n Any other key to skip re-roll");
         }
 
@@ -219,6 +219,5 @@ namespace CMP1903_A2_2324 {
                     break;
             }
         }
-
     }
 }

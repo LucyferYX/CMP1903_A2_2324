@@ -49,7 +49,7 @@ namespace CMP1903_A2_2324 {
         /// <param name="player">The player who is playing the turn.</param>
         /// <param name="turnMessage">The message to display at the start of the turn.</param>
         /// <returns>Returns true if the total roll is same as EndScore, returns false otherwise.</returns>
-        public bool PlayTurn(IPlayer player) {
+        private bool PlayTurn(IPlayer player) {
             WriteTurnMessage(player);
 
             if (!player.IsComputer) {
@@ -116,7 +116,7 @@ namespace CMP1903_A2_2324 {
         /// </summary>
         /// <param name="player">The current player.</param>
         /// <param name="rolls">The array of player's die rolls.</param>
-        public static void WriteRollMessage(IPlayer player, int[] rolls, int total) {
+        private static void WriteRollMessage(IPlayer player, int[] rolls, int total) {
             if (rolls[0] == rolls[1]) {
                 Console.WriteLine($"{player.Name} rolled {total}! Double points {total * 2}! ({rolls[0]},{rolls[1]})");
             } else {
