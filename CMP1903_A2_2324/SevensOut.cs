@@ -50,7 +50,8 @@ namespace CMP1903_A2_2324 {
         /// <param name="turnMessage">The message to display at the start of the turn.</param>
         /// <returns>Returns true if the total roll is same as EndScore, returns false otherwise.</returns>
         public bool PlayTurn(IPlayer player) {
-            Console.WriteLine(player.IsComputer ? $"\n{player.Name} turn." : $"\n{player.Name} turn. Press any key to roll the dice...");
+            WriteTurnMessage(player);
+
             if (!player.IsComputer) {
                 Console.ReadKey(true);
             }
@@ -66,7 +67,7 @@ namespace CMP1903_A2_2324 {
 
             TestGameEndCondition(isGameOver, total);
 
-            Console.WriteLine($"{player.Name} score is {player.Score}");
+            WriteScoreMessage(player);
 
             return isGameOver;
         }
@@ -79,13 +80,9 @@ namespace CMP1903_A2_2324 {
         /// <returns>The total score of the dice rolls.</returns>
         private static int ProcessRolls(IPlayer player, int[] rolls) {
             int total = rolls.Sum();
+            WriteRollMessage(player, rolls, total);
             if (rolls[0] == rolls[1]) {
-                Console.WriteLine($"{player.Name} rolled {total}! Double points {total * 2}! ({rolls[0]},{rolls[1]})");
-                if (rolls[0] == rolls[1]) {
-                    total *= 2;
-                }
-            } else {
-                Console.WriteLine($"{player.Name} rolled {total}! ({rolls[0]},{rolls[1]})");
+                total *= 2;
             }
 
             return total;
@@ -114,5 +111,17 @@ namespace CMP1903_A2_2324 {
             Testing.TestingSevensOutEndScore(isGameOver, total);
         }
 
+        /// <summary>
+        /// Method that outputs line about player's rolls.
+        /// </summary>
+        /// <param name="player">The current player.</param>
+        /// <param name="rolls">The array of player's die rolls.</param>
+        public static void WriteRollMessage(IPlayer player, int[] rolls, int total) {
+            if (rolls[0] == rolls[1]) {
+                Console.WriteLine($"{player.Name} rolled {total}! Double points {total * 2}! ({rolls[0]},{rolls[1]})");
+            } else {
+                Console.WriteLine($"{player.Name} rolled {total}! ({rolls[0]},{rolls[1]})");
+            }
+        }
     }
 }

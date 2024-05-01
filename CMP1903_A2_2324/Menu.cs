@@ -13,7 +13,7 @@ namespace CMP1903_A1_2324 {
     /// Menu class 
     /// </summary>
     internal class Menu {
-        static void Main(string[] args) {
+        static void Main() {
             bool continueProgram = true;
             bool isComputer = true;
 

@@ -54,18 +54,19 @@ namespace CMP1903_A2_2324 {
         /// <param name="rollMessage">The message to display after the dice are rolled.</param>
         /// <returns>Returns true if the player's score is 20 or more, returns false otherwise.</returns>
         private bool PlayTurn(IPlayer player) {
-            Console.WriteLine(player.IsComputer ? $"\n{player.Name} turn." : $"\n{player.Name} turn. Press any key to roll the dice...");
+            WriteTurnMessage(player);
 
             if (!player.IsComputer) {
                 Console.ReadKey(true);
             }
 
             int[] rolls = RollDice(DieCount);
-            Console.WriteLine($"{player.Name} rolled {string.Join(", ", rolls)}");
+            WriteRollMessage(player, rolls, false);
+
             rolls = HandleTwoOfAKind(rolls, player);
             TestScore(player, rolls);
 
-            Console.WriteLine($"{player.Name} score is {player.Score}");
+            WriteScoreMessage(player);
 
             return player.Score >= EndScore;
         }
@@ -82,7 +83,7 @@ namespace CMP1903_A2_2324 {
             for (int i = 0; i < counts.Length; i++) {
                 if (counts[i] == 2 && !counts.Any(count => count > 2)) {
                     rolls = HandlePlayer(rolls, player, i);
-                    Console.WriteLine($"Final rolls are {string.Join(", ", rolls)}");
+                    WriteRollMessage(player, rolls, true);
                     break;
                 }
             }
@@ -104,22 +105,22 @@ namespace CMP1903_A2_2324 {
                 Random rnd = new();
                 choice = rnd.Next(1, 4);
             } else {
-                Console.WriteLine($"{player.Name} rolled 2-of-a-kind of {i + 1}! Press: \n [1] to re-roll all dice \n [2] to re-roll the remaining dice \n Any other key to skip re-roll");
+                WriteRerollChoiceMessage(player, i);
                 var keyInfo = Console.ReadKey(intercept: true);
                 choice = keyInfo.Key == ConsoleKey.D1 ? 1 : keyInfo.Key == ConsoleKey.D2 ? 2 : 3;
             }
 
             switch (choice) {
                 case 1:
-                    Console.WriteLine($"{player.Name} chose to re-roll all dice");
+                    OutputRollChoiceMessage(player, 1);
                     rolls = RollDice(DieCount);
                     break;
                 case 2:
-                    Console.WriteLine($"{player.Name} chose to re-roll the remaining dice");
+                    OutputRollChoiceMessage(player, 2);
                     rolls = RollDice(DieCount, rolls, i);
                     break;
                 default:
-                    Console.WriteLine($"{player.Name} chose to skip re-roll");
+                    OutputRollChoiceMessage(player, 0);
                     break;
             }
 
@@ -180,5 +181,44 @@ namespace CMP1903_A2_2324 {
                 Console.WriteLine($"Error: {ex.Message}. Score couldn't be tested.");
             }
         }
+
+        /// <summary>
+        /// Method that outputs line about player's rolls.
+        /// </summary>
+        /// <param name="player">The current player.</param>
+        /// <param name="rolls">The array of player's die rolls.</param>
+        /// <param name="final">True if the rolls are after the re-roll.</param>
+        public static void WriteRollMessage(IPlayer player, int[] rolls, bool final) {
+            Console.WriteLine(!final ? $"{player.Name} rolled {string.Join(", ", rolls)}" : $"Final rolls are {string.Join(", ", rolls)}");
+        }
+
+        /// <summary>
+        /// Method that outputs line about player's possible choice on re-roll.
+        /// </summary>
+        /// <param name="player">The current player.</param>
+        /// <param name="i">The index of the two of a kind die.</param>
+        public static void WriteRerollChoiceMessage(IPlayer player, int i) {
+            Console.WriteLine($"{player.Name} rolled 2-of-a-kind of {i + 1}! Press: \n [1] to re-roll all dice \n [2] to re-roll the remaining dice \n Any other key to skip re-roll");
+        }
+
+        /// <summary>
+        /// Method that outputs line about player's chosen choice on re-roll.
+        /// </summary>
+        /// <param name="player">The current player.</param>
+        /// <param name="choice">The player's choice on what to do.</param>
+        private static void OutputRollChoiceMessage(IPlayer player, int choice) {
+            switch (choice) {
+                case 1:
+                    Console.WriteLine($"{player.Name} chose to re-roll all dice");
+                    break;
+                case 2:
+                    Console.WriteLine($"{player.Name} chose to re-roll the remaining dice");
+                    break;
+                default:
+                    Console.WriteLine($"{player.Name} chose to skip re-roll");
+                    break;
+            }
+        }
+
     }
 }

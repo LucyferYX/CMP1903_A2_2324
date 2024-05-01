@@ -55,6 +55,7 @@ namespace CMP1903_A2_2324 {
         /// </summary>
         /// <param name="count">The number of dice to roll.</param>
         /// <returns>The array of the dice rolls.</returns>
+        // Example of LINQ
         protected int[] RollDice(int count) {
             return dice.Take(count).Select(d => d.Roll()).ToArray();
         }
@@ -67,23 +68,38 @@ namespace CMP1903_A2_2324 {
         /// <returns>The new array of dice rolls after re-rolling the remaining dice.</returns>
         protected int[] RollDice(int dieCount, int[] rolls, int i) {
             try {
-                int[] newRolls = new int[dieCount];
                 int rollCount = 0;
 
-                for (int j = 0; j < rolls.Length; j++) {
-                    if (rolls[j] == i + 1 && rollCount < 2) {
-                        newRolls[j] = rolls[j];
+                int[] newRolls = rolls.Select((roll, index) => {
+                    if (roll == i + 1 && rollCount < 2) {
                         rollCount++;
+                        return roll;
                     } else {
-                        newRolls[j] = RollDice(1)[0];
+                        return RollDice(1)[0];
                     }
-                }
+                }).ToArray();
 
                 return newRolls;
             } catch (Exception ex) {
                 Console.WriteLine($"Error: {ex.Message}. Rolls could not be re-rolled.");
                 return new int[dieCount];
             }
+        }
+
+        /// <summary>
+        /// Method that outputs line about player's turn.
+        /// </summary>
+        /// <param name="player">The current player.</param>
+        public static void WriteTurnMessage(IPlayer player) {
+            Console.WriteLine(player.IsComputer ? $"\n{player.Name} turn." : $"\n{player.Name} turn. Press any key to roll the dice...");
+        }
+
+        /// <summary>
+        /// Method that outputs line about player's score.
+        /// </summary>
+        /// <param name="player">The current player.</param>
+        public static void WriteScoreMessage(IPlayer player) {
+            Console.WriteLine($"{player.Name} score is {player.Score}");
         }
     }
 }
